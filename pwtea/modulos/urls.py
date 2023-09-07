@@ -4,9 +4,9 @@ from rest_framework.routers import SimpleRouter, DefaultRouter
 from .viewsets import ModuloViewSet
 
 router = DefaultRouter()
-router.register(r'modulo', ModuloViewSet)
+router.register(r'modulos', ModuloViewSet)
 
 urlpatterns = [
-    path('modulos/', include(router.urls)),
+    path('', include(router.urls)),
     # Otras URL de tu aplicación (si las tienes)
 ]

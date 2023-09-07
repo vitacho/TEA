@@ -5,4 +5,4 @@ from .models import Modulo
 class ModuloSerializer(serializers.ModelSerializer):
     class Meta:
         model = Modulo
-        fields = ['id', 'nombre', 'descripcion']
+        fields = ['id', 'nombre','imagen', 'descripcion']
