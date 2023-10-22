@@ -32,10 +32,10 @@ EMAIL_USE_TLS = True
 
 
 # Application definition
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORGIN_WHITELIST = (
     'http://localhost:4000',
-    'http://localhost:8080',
 )
 
 INSTALLED_APPS = [
@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'corsheaders',
+    #coreapi
+    'coreapi',
 
 
 ]
@@ -172,3 +174,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
