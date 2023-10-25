@@ -1,6 +1,11 @@
 import uuid
 from django.db import models
 
+PICTOGRAMA = 1
+DIBUJO = 2
+MEMORIA = 3
+CHOICE_TIPO = ((PICTOGRAMA, 'Pictograma'),)
+
 
 # Create your models here
 
@@ -12,7 +17,7 @@ class Modulo(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
     activo = models.BooleanField(default=True)
-    """ implemantar slug"""
+    tipo = models.CharField(null=False, max_length=250, choices=CHOICE_TIPO)
 
 
 def __str__(self):
@@ -66,11 +71,11 @@ class Actividad(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre = models.CharField(null=False, max_length=250)
     descripcion = models.TextField()
+    tipo = models.CharField(null=False, max_length=250, choices=CHOICE_TIPO)
     activo = models.BooleanField(default=True, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.nombre
@@ -79,29 +84,47 @@ class Actividad(models.Model):
 class ActividadDibujo(Actividad):
     imagen = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
 
+
 class ActividadPictogramas(Actividad):
-    imagen = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
-    nombrepictograma = models.CharField(null=False, max_length=250)
+    nombre_pictograma = models.CharField(null=False, max_length=250)
+    descripcion_pictograma = models.CharField(null=False, max_length=250)
+    imagen_pictograma = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
+    orden = models.PositiveBigIntegerField(null=False)
+
+    class Meta:
+        ordering = ['categoria', 'orden']
+
+    def __str__(self):
+        return f"{self.nombre} - {self.nombre_pictograma}"
+
 
 class ActividadMemoria(Actividad):
     imagen = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
 
+
 class ActividadComunicacion(Actividad):
     dato = models.CharField(null=False, max_length=250)
+
+
 class ActividadEscritura(Actividad):
     dato = models.CharField(null=False, max_length=250)
+
 
 class ActividadGramaticaOrtografia(Actividad):
     dato = models.CharField(null=False, max_length=250)
 
+
 class ActividadOrdenarPalabras(Actividad):
     palabras = models.CharField(null=False, max_length=250)
+
 
 class ActividadPercepcion(Actividad):
     imagen = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
 
+
 class ActividadFiguraFondo(Actividad):
     imagen = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
+
 
 class ResulatadosActividad(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -109,4 +132,3 @@ class ResulatadosActividad(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
     tiempoenresolver = models.IntegerField(null=False)
-

@@ -10,11 +10,11 @@ class ModuloViewSet(viewsets.ModelViewSet):
     serializer_class = ModuloSerializer
 
 
-
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
-    #manejo de peticion post para la creacion de categorias
+
+    # manejo de peticion post para la creacion de categorias
     def create(self, request, *args, **kwargs):
         mutable_data = request.data.copy()  # Crea una copia mutable del QueryDict
         if 'activo' not in mutable_data:
@@ -25,7 +25,8 @@ class CategoriaViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    #manejo de peticiones path y put
+
+    # manejo de peticiones path y put
     def update(self, request, *args, **kwargs):
 
         print("Entra a update")
@@ -44,10 +45,8 @@ class CategoriaViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
 
-
-class CategoriaListaViewSet(generics.ListAPIView):
+class CategorizeListaViewSet(generics.ListAPIView):
     serializer_class = CategoriaSerializer
-
 
     def get_queryset(self):
         modulo_id = self.kwargs.get('modulo_id')
