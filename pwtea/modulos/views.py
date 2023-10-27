@@ -1,9 +1,9 @@
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
-from .models import Modulo, Categoria, Actividad
-from .serializers import ModuloSerializer, CategoriaSerializer
+from .models import Modulo, Categoria, Actividad, ActividadPictogramas
+from .serializers import ModuloSerializer, CategoriaSerializer, ActividadaPictogramasSerializer
 from django.shortcuts import get_object_or_404
-
+import uuid
 
 class ModuloViewSet(viewsets.ModelViewSet):
     queryset = Modulo.objects.all()
@@ -45,6 +45,8 @@ class CategoriaViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
 
+
+
 class CategorizeListaViewSet(generics.ListAPIView):
     serializer_class = CategoriaSerializer
 
@@ -61,3 +63,37 @@ class CategorizeListaViewSet(generics.ListAPIView):
             return []
 
         return categorias
+
+
+class ActividadPictogramaViewSet(viewsets.ModelViewSet):
+    queryset = ActividadPictogramas.objects.all()
+    serializer_class = ActividadaPictogramasSerializer
+    def create(self, request, *args, **kwargs):
+        mutable_data = request.data.copy()  # Crea una copia mutable del QueryDict
+        if 'activo' not in mutable_data:
+            mutable_data['activo'] = True  # Establece activo en True si no se recibe ningún valor
+
+        serializer = CategoriaSerializer(data=mutable_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+
+    #agregar control cuan hayan reporte ya listo:
+
+
+class ActividadPictogramaListViewSet(generics.ListAPIView):
+    serializer_class = ActividadaPictogramasSerializer
+    def get_queryset(self):
+
+            #Obtenemos la categoria correpdiente
+            categoria_id = self.kwargs.get('categoria_id')
+
+            #Filtar las actividades de pictogramas que pertenecen a la categoria solo las activas
+            categoria = get_object_or_404(Categoria, id=categoria_id)
+
+            #
+            actividades = ActividadPictogramas.objects.filter(categoria=categoria, activo=True)
+            if not actividades.exists():
+                return []
+            return actividades

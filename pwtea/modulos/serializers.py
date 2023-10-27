@@ -7,7 +7,7 @@ from .models import Modulo, Categoria, Actividad, ActividadPictogramas, Activida
 class ModuloSerializer(serializers.ModelSerializer):
     class Meta:
         model = Modulo
-        fields = ['id', 'nombre', 'imagen', 'descripcion']
+        fields = ['id', 'nombre', 'imagen', 'descripcion', 'tipo']
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -47,3 +47,4 @@ class ActividadViewSet(serializers.ModelSerializer):
         actividad = ActividadFactory.crear_actividad(tipo, **validated_data)
         actividad.save()
         return actividad
+

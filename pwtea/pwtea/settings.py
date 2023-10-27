@@ -1,7 +1,8 @@
 import os
 import environ
 from pathlib import Path
-
+#
+#
 #configuracion de  environ
 env = environ.Env()
 environ.Env.read_env()  #leer el archivo

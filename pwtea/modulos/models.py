@@ -4,8 +4,12 @@ from django.db import models
 PICTOGRAMA = 1
 DIBUJO = 2
 MEMORIA = 3
-CHOICE_TIPO = ((PICTOGRAMA, 'Pictograma'),)
 
+CHOICE_TIPO = [
+  (1, 'Pictograma'),
+  (2, 'Dibujo'),
+  (2, 'Memoria'),
+]
 
 # Create your models here
 
@@ -90,9 +94,6 @@ class ActividadPictogramas(Actividad):
     descripcion_pictograma = models.CharField(null=False, max_length=250)
     imagen_pictograma = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
     orden = models.PositiveBigIntegerField(null=False)
-
-    class Meta:
-        ordering = ['categoria', 'orden']
 
     def __str__(self):
         return f"{self.nombre} - {self.nombre_pictograma}"
