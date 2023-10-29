@@ -1,14 +1,14 @@
 import uuid
 from django.db import models
 
-PICTOGRAMA = 1
-DIBUJO = 2
-MEMORIA = 3
+PICTOGRAMA = 'PIC'
+DIBUJO = 'DIB'
+MEMORIA = 'MEM'
 
 CHOICE_TIPO = [
-  (1, 'Pictograma'),
-  (2, 'Dibujo'),
-  (2, 'Memoria'),
+  (PICTOGRAMA, 'Pictograma'),
+  (DIBUJO, 'Dibujo'),
+  (MEMORIA, 'Memoria'),
 ]
 
 # Create your models here
@@ -21,7 +21,7 @@ class Modulo(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
     activo = models.BooleanField(default=True)
-    tipo = models.CharField(null=False, max_length=250, choices=CHOICE_TIPO)
+    tipo = models.CharField(choices=CHOICE_TIPO)
 
 
 def __str__(self):
@@ -75,7 +75,7 @@ class Actividad(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre = models.CharField(null=False, max_length=250)
     descripcion = models.TextField()
-    tipo = models.CharField(null=False, max_length=250, choices=CHOICE_TIPO)
+    tipo = models.CharField(choices=CHOICE_TIPO)
     activo = models.BooleanField(default=True, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
@@ -97,6 +97,7 @@ class ActividadPictogramas(Actividad):
 
     def __str__(self):
         return f"{self.nombre} - {self.nombre_pictograma}"
+    # metodo para obtener el orden de la actividad pictograma
 
 
 class ActividadMemoria(Actividad):
