@@ -25,7 +25,7 @@ class ActividadSerializer(serializers.ModelSerializer):
 class ActividadaPictogramasSerializer(serializers.ModelSerializer):
     class Meta:
         model = ActividadPictogramas
-        fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'nombre_pictograma', 'descripcion_pictograma', 'imagen_pictograma', 'orden']
+        fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'imagen_pictograma', 'orden']
 
 class ActividadFactory:
     @staticmethod

@@ -93,7 +93,7 @@ class ActividadPictogramaListViewSet(generics.ListAPIView):
             categoria = get_object_or_404(Categoria, id=categoria_id)
 
             #
-            actividades = ActividadPictogramas.objects.filter(categoria=categoria, activo=True)
+            actividades = ActividadPictogramas.objects.filter(categoria=categoria).order_by('orden')
             if not actividades.exists():
                 return []
             return actividades

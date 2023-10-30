@@ -74,7 +74,7 @@ class Categoria(models.Model):
 class Actividad(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nombre = models.CharField(null=False, max_length=250)
-    descripcion = models.TextField()
+    descripcion = models.TextField(null=True, blank=True)
     tipo = models.CharField(choices=CHOICE_TIPO)
     activo = models.BooleanField(default=True, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
@@ -90,13 +90,18 @@ class ActividadDibujo(Actividad):
 
 
 class ActividadPictogramas(Actividad):
-    nombre_pictograma = models.CharField(null=False, max_length=250)
-    descripcion_pictograma = models.CharField(null=False, max_length=250)
+    #nombre_pictograma = models.CharField(null=False, max_length=250)
+    #descripcion_pictograma = models.CharField(null=False, max_length=250)
     imagen_pictograma = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
-    orden = models.PositiveBigIntegerField(null=False)
-
+    orden = models.PositiveBigIntegerField(blank=True, null=True)
+    # metodo para obtener el orden de la actividad pictograma
+    def save(self, *args, **kwargs):
+        if not self.orden:  # Si no se ha especificado un orden
+            count = ActividadPictogramas.objects.filter(categoria=self.categoria).count()
+            self.orden = count + 1  # Asignar el siguiente número en secuencia
+        super(ActividadPictogramas, self).save(*args, **kwargs)
     def __str__(self):
-        return f"{self.nombre} - {self.nombre_pictograma}"
+        return f"{self.nombre} - {self.orden}"
     # metodo para obtener el orden de la actividad pictograma
 
 
@@ -134,3 +139,6 @@ class ResulatadosActividad(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
     tiempoenresolver = models.IntegerField(null=False)
+
+
+
