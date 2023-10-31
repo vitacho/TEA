@@ -73,7 +73,9 @@ class ActividadPictogramaViewSet(viewsets.ModelViewSet):
         if 'activo' not in mutable_data:
             mutable_data['activo'] = True  # Establece activo en True si no se recibe ningún valor
 
-        serializer = CategoriaSerializer(data=mutable_data)
+        if 'tipo' not in mutable_data:
+            mutable_data['tipo'] = 'PIC'
+        serializer = ActividadaPictogramasSerializer(data=mutable_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
