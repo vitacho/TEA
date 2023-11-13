@@ -54,7 +54,7 @@ class CategorizeListaViewSet(generics.ListAPIView):
         modulo_id = self.kwargs.get('modulo_id')
         modulo = get_object_or_404(Modulo, id=modulo_id)
 
-        categorias = Categoria.objects.filter(modulo=modulo, activo=True)
+        categorias = Categoria.objects.filter(modulo=modulo)
 
         # Verifica si existen categorías relacionadas con el módulo
         if not categorias.exists():
@@ -75,6 +75,10 @@ class ActividadPictogramaViewSet(viewsets.ModelViewSet):
 
         if 'tipo' not in mutable_data:
             mutable_data['tipo'] = 'PIC'
+
+        if 'descripcion' not in mutable_data:
+            mutable_data['descripcion'] = ' '
+
         serializer = ActividadaPictogramasSerializer(data=mutable_data)
         if serializer.is_valid():
             serializer.save()
@@ -99,3 +103,4 @@ class ActividadPictogramaListViewSet(generics.ListAPIView):
             if not actividades.exists():
                 return []
             return actividades
+

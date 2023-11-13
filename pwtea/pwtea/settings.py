@@ -1,7 +1,8 @@
 import os
 import environ
 from pathlib import Path
-#
+#imprtacion de prueba de clounidary
+import cloudinary_storage
 #
 #configuracion de  environ
 env = environ.Env()
@@ -57,8 +58,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'corsheaders',
     #coreapi
-    'coreapi'
+    'coreapi',
     #cloudinary
+    'cloudinary_storage',
+    'cloudinary',
 
 
 ]
@@ -172,6 +175,13 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#CLOUNIDARY CONFIGURACION DJANGO
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY'),
+    'API_SECRET': env('API_SECRET')
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
