@@ -10,6 +10,9 @@ class ModuloViewSet(viewsets.ModelViewSet):
     serializer_class = ModuloSerializer
 
 
+"""
+views de Categorias
+"""
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
@@ -65,6 +68,27 @@ class CategorizeListaViewSet(generics.ListAPIView):
         return categorias
 
 
+class CategorizeListaActivoViewSet(generics.ListAPIView):
+    serializer_class = CategoriaSerializer
+
+    def get_queryset(self):
+        modulo_id = self.kwargs.get('modulo_id')
+        modulo = get_object_or_404(Modulo, id=modulo_id)
+
+        categorias = Categoria.objects.filter(modulo=modulo,activo=True)
+
+        # Verifica si existen categorías relacionadas con el módulo
+        if not categorias.exists():
+            # Si no existen categorías, puedes devolver una respuesta personalizada, como un mensaje de error}
+
+            return []
+
+        return categorias
+
+"""
+views de actividades pictogramas
+"""
+
 class ActividadPictogramaViewSet(viewsets.ModelViewSet):
     queryset = ActividadPictogramas.objects.all()
     serializer_class = ActividadaPictogramasSerializer
@@ -104,3 +128,17 @@ class ActividadPictogramaListViewSet(generics.ListAPIView):
                 return []
             return actividades
 
+class ActividadPictogramaActivoViewSet(generics.ListAPIView):
+    serializer_class = ActividadaPictogramasSerializer
+    def get_queryset(self):
+        #Se obtienen la categorias correspondientes
+        categoria_id = self.kwargs.get('categoria_id')
+        #Se obtienen las actividades de pictogramas que pertenecen a la categoria solo las activas
+        categoria = get_object_or_404(Categoria, id=categoria_id)
+        #Se filtran las actividades de pictogramas que pertenecen a la categoria solo las activas
+        actividades = ActividadPictogramas.objects.filter(categoria=categoria, activo=True).order_by('orden')
+        #Se verifica si existen actividades de pictogramas que pertenecen a la categoria solo las activas
+        if not actividades.exists():
+            #Si no existen actividades de pictogramas que pertenecen a la categoria solo las activas,se deuelve un lista vacia
+            return []
+        return actividades
