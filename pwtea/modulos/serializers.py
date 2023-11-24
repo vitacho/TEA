@@ -1,7 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from .models import Modulo, Categoria, Actividad, ActividadPictogramas, ActividadDibujo, ActividadMemoria, \
-    ActividadComunicacion
+    ActividadComunicacion, ActividadOrdenarOracion, Palabra
 
 
 class ModuloSerializer(serializers.ModelSerializer):
@@ -27,24 +27,28 @@ class ActividadaPictogramasSerializer(serializers.ModelSerializer):
         model = ActividadPictogramas
         fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'imagen_pictograma', 'orden']
 
-class ActividadFactory:
-    @staticmethod
-    def crear_actividad(tipo, *args, **kwargs):
-        if tipo == 'dibujo':
-            return ActividadDibujo(*args, **kwargs)
-        elif tipo == 'pictogramas':
-            return ActividadPictogramas(*args, **kwargs)
-        elif tipo == 'memoria':
-            return ActividadMemoria(*args, **kwargs)
-        elif tipo == 'comunicacion':
-            return ActividadComunicacion(*args, **kwargs)
-        else:
-            raise ValueError('Tipo de actividad no soportado')
 
-class ActividadViewSet(serializers.ModelSerializer):
-    def create(self, validated_data):
-        tipo = validated_data.pop('tipo')
-        actividad = ActividadFactory.crear_actividad(tipo, **validated_data)
-        actividad.save()
-        return actividad
+'''
+Activiades de Ordenamiento de palabras con imagenes
+'''
 
+
+class ActividadOrdenarOracionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActividadOrdenarOracion
+        fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'imagen_ordenar', 'oracion',
+                  'palabras']
+
+    def get_frases(self, obj):
+        return obj.obtener_frases()
+
+
+'''
+Frases de las actividades de ordenar oracion
+'''
+
+
+class PalabraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Palabra
+        fields = ['id', 'texto', 'imagen']
