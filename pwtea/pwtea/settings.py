@@ -76,6 +76,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #corsheaders
     'corsheaders.middleware.CorsMiddleware',
+      # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 
 ]
 
@@ -92,6 +94,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #allauth
+                 'django.template.context_processors.request'
             ],
         },
     },
@@ -191,3 +195,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
+
+#AUTH_USER_MODEL = 'modulos.Usuario'

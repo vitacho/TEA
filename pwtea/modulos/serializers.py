@@ -36,7 +36,7 @@ Activiades de Ordenamiento de palabras con imagenes
 class ActividadOrdenarOracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ActividadOrdenarOracion
-        fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'imagen_ordenar', 'oracion',
+        fields = ['id', 'nombre', 'descripcion', 'tipo', 'activo', 'categoria', 'oracion',
                   'palabras']
 
     def get_frases(self, obj):

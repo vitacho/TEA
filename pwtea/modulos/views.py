@@ -184,7 +184,9 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
         serializer = ActividadOrdenarOracionSerializer(data=mutable_data)
         if 'tipo' not in mutable_data:
             mutable_data['tipo'] = 'ORD'
-
+        
+        palabras_creadas = []
+        
         if serializer.is_valid():
             instance = serializer.save()
             if 'oracion' in mutable_data:
@@ -196,7 +198,13 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
                 # separamos la oracion en palabras
                 oracion_token = nltk.word_tokenize(oracion, 'spanish')
                 print(oracion_token)
-                palabras_creadas = []
+                
+                # verificamos que la oracion al menos dos o mas palabras
+                if len(oracion_token) < 2:
+                    return Response({
+                        'message': 'La oración debe tener al menos dos palabras'
+                    }, status=400)
+                
                 for palabra in oracion_token:
 
                     # se verifica si la palabra ya existe en la base de datos
@@ -228,6 +236,8 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
         if 'tipo' not in mutable_data:
             mutable_data['tipo'] = 'ORD'
 
+        palabras_creadas = []
+
         if serializer.is_valid():
             instance = serializer.save()
             if 'oracion' in mutable_data:
@@ -235,7 +245,12 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
                 oracion = re.sub(r'\s+', ' ', oracion)
                 oracion_token = nltk.word_tokenize(oracion, 'spanish')
 
-                palabras_creadas = []
+                # verificamos que la oracion al menos dos o mas palabras
+                if len(oracion_token) < 2:
+                    return Response({
+                        'message': 'La oración debe tener al menos dos palabras'
+                    }, status=400)
+
                 for palabra in oracion_token:
                     if Palabra.objects.filter(texto=palabra.lower()).exists():
                         obj = Palabra.objects.get(texto=palabra.lower())
@@ -258,7 +273,10 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
             }, status=200)
         else:
             return Response(serializer.errors, status=400)
+    
 
+    def get_queryset(self):
+        return super().get_queryset()
 
 class ActividadOrdenarOracionListViewSet(generics.ListAPIView):
     serializer_class = ActividadOrdenarOracionSerializer
