@@ -22,7 +22,9 @@ urlpatterns = [
     path('v1/actividades/ordenar-oracion/categorias/<uuid:categoria_id>/', ActividadOrdenarOracionListViewSet.as_view()),
     path('v1/actividades/ordenar-oracion/activas/<uuid:categoria_id>/', ActividadOrdenarOracionActivoViewSet.as_view()),
     #autenticacion
-     path('v1/usuario/registro', RegistrationAPIView.as_view(), name='registration_api'),
-     path('v1/usuario/usuarios', UsuariosListAPIView.as_view(), name='user-list'),
 
-]
+    path('v1/usuario/usuarios', UsuariosListAPIView.as_view(), name='user-list'),
+    path('v1/usuario/registrousuario', RegistroUsuario.as_view()),
+    path('v1/usuario/iniciosesion', InicioSesion.as_view()),
+
+]   

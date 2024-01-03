@@ -95,6 +95,9 @@ class Actividad(models.Model):
     def __str__(self):
         return f"{self.nombre} - {self.id}"
 
+    class Meta:
+       # verbose_name = "Actividades"
+        verbose_name_plural = "Actividades"
 
 class ActividadDibujo(Actividad):
     imagen = models.ImageField(
@@ -121,6 +124,10 @@ class ActividadPictogramas(Actividad):
     # metodo para obtener el orden de la actividad pictograma
 
 
+    class Meta:
+        #verbose_name = "Actividad Pictogramas"
+        verbose_name_plural = "Actividades Pictogramas"
+
 class ActividadMemoria(Actividad):
     imagen = models.ImageField(
         upload_to='actividad_imagen/', null=True, blank=True)
@@ -144,6 +151,10 @@ class ActividadOrdenarOracion(Actividad):
     # imagen_ordenar = models.ImageField(upload_to='actividad_imagen/', null=True, blank=True)
     # Cambair a false despues
     oracion = models.CharField(null=True, max_length=250, blank=True)
+
+    class Meta:
+        #verbose_name = "Actividad Ordenar Oraciones"
+        verbose_name_plural = "Actividades Ordenar Oraciones"
 
 
 class Palabra(models.Model):
@@ -178,9 +189,12 @@ class ResulatadosActividad(models.Model):
     creado = models.DateTimeField(auto_now_add=True)
     tiempoenresolver = models.IntegerField(null=False)
 
+    class Meta:
+        #verbose_name = "Resultado de Actividad"
+        verbose_name_plural = "Resultados de Actividades"
 
 
-class Usuario(models.Model):
+class Persona(models.Model):
 
     TIPO_ADMINISTRADOR = 'A'
     TIPO_PADRES = 'p'
@@ -195,7 +209,7 @@ class Usuario(models.Model):
 
     email = models.EmailField(unique=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+   # usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     ninio = models.ForeignKey(
         Ninio, on_delete=models.CASCADE, null=True, blank=True)
     telefono = models.CharField(max_length=10, null=True, blank=True)
@@ -204,3 +218,7 @@ class Usuario(models.Model):
     activo = models.BooleanField(default=True, null=False, blank=False)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        #verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"

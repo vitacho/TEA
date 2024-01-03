@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'modulos',
     #rest_framework
     'rest_framework',
+    'rest_framework.authtoken',
     #allauth
     'django.contrib.sites',
     'allauth',
@@ -147,7 +148,7 @@ AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
-    # `allauth` specific authentication methods, such as login by e-mail
+    # allauth specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 
 ]
@@ -162,7 +163,7 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Verificacion'
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400  # 1 dia en segundos
-
+ACCOUNT_UNIQUE_EMAIL=True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
