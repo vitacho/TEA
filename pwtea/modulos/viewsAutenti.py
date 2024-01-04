@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny 
 from .serializersAutenti import UsuariosSerealizer, RegistroUsuarioSerealizer, InicioSesionSerializer
-
+from rest_framework.authentication import TokenAuthentication
 
 from rest_framework.authtoken.models import Token
 
@@ -70,3 +70,17 @@ class InicioSesion(generics.GenericAPIView):
         else:
             
             return Response({"error": "Credenciales incorrectas"}, status=status.HTTP_400_BAD_REQUEST)
+'''
+Verificamos el token del usario
+'''
+class ObtenerUsuario(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = get_user_model().objects.get(id=request.user.id)
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            # Agrega aquí cualquier otro campo que quieras devolver.
+        })

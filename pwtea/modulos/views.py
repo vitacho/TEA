@@ -4,14 +4,19 @@ from .models import Modulo, Categoria, Actividad, ActividadPictogramas, Activida
 from .serializers import (ModuloSerializer, CategoriaSerializer, ActividadaPictogramasSerializer,
                           ActividadOrdenarOracionSerializer, PalabraSerializer)
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 from django.db import transaction
 import re
 import nltk
+
 # from nltk.world_tokenize import word_tokenize
 
 
 class ModuloViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     queryset = Modulo.objects.all()
     serializer_class = ModuloSerializer
 
@@ -22,6 +27,8 @@ views de Categorias
 
 
 class CategoriaViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
@@ -147,7 +154,7 @@ class ActividadPictogramaListViewSet(generics.ListAPIView):
 
 class ActividadPictogramaActivoViewSet(generics.ListAPIView):
     serializer_class = ActividadaPictogramasSerializer
-
+    
     def get_queryset(self):
         # Se obtienen la categorias correspondiente
         categoria_id = self.kwargs.get('categoria_id')
@@ -177,6 +184,8 @@ Actividades de Ordenamiento de palabras con imagenes
 class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
     queryset = ActividadOrdenarOracion.objects.all()
     serializer_class = ActividadOrdenarOracionSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
@@ -280,6 +289,8 @@ class ActividadOrdenarOracionViewSet(viewsets.ModelViewSet):
 
 class ActividadOrdenarOracionListViewSet(generics.ListAPIView):
     serializer_class = ActividadOrdenarOracionSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         # Obtenemos la categoria correspondiente
@@ -299,6 +310,8 @@ class ActividadOrdenarOracionListViewSet(generics.ListAPIView):
 class ActividadOrdenarOracionActivoViewSet(generics.ListAPIView):
 
     serializer_class = ActividadOrdenarOracionSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
         # Se obtienen la categorias correspondiente
@@ -322,7 +335,8 @@ class ActividadOrdenarOracionActivoViewSet(generics.ListAPIView):
 class PalabraViewSet(viewsets.ModelViewSet):
     queryset = Palabra.objects.all()
     serializer_class = PalabraSerializer
-
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
     # manejo de peticion post para la creacion de palabras
     def create(self, request, *args, **kwargs):
         mutable_data = request.data.copy()
